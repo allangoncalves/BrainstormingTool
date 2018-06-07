@@ -1,0 +1,8 @@
+.settings
+.classpath
+.project
+target/
+bin/
+src/test/java/bp/IdeaHelp.java
+src/test/java/bp/SessionHelp.java
+src/test/java/bp/AppTest.java
