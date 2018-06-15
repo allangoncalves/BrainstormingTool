@@ -1,6 +1,9 @@
 package bp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -8,63 +11,68 @@ import java.util.List;
  */
 public class Session {
 
-  User owner;
-  SessionPhase phase;
-  static final int VOTINGLIMIT = 3;
-  List<Idea> ideas;
-  List<User> participants;
+	User owner;
+	SessionPhase phase;
+	static final int VOTINGLIMIT = 3;
+	List<Idea> ideas;
+	List<User> participants;
 
-  public Session(User owner) {
-    this.owner = owner;
-    this.phase = SessionPhase.WELCOME;
-    this.ideas = new ArrayList<>();
-    this.participants = new ArrayList<>();
-  }
+	public Session(User owner) {
+		this.owner = owner;
+		this.phase = SessionPhase.WELCOME;
+		this.ideas = new ArrayList<>();
+		this.participants = new ArrayList<>();
+	}
 
-  public SessionPhase nextPhase() {
-    return this.phase.next();
-  }
+	public SessionPhase nextPhase() {
+		return this.phase.next();
+	}
 
-  public SessionPhase getPhase() {
-    return this.phase;
-  }
-  
-  public boolean addIdea(Idea idea) {
-    //TODO adicionar ideia
-    return false;
-  }
+	public SessionPhase getPhase() {
+		return this.phase;
+	}
 
-  public List<Idea> getIdeas() {
-    return this.ideas;
-  }
+	public void addIdea(Idea idea) throws Exception {
+		if(this.phase == SessionPhase.BRAINSTORM) {
+			this.ideas.add(idea);
+		}
+		else {
+			throw new Exception("Não está na fase de ideação!");
+		}
+	}
 
-  public List<Idea> rankIdeas() {
-    //TODO rankear ideias
-    return null;
-  }
+	public List<Idea> getIdeas() {
+		return this.ideas;
+	}
 
-  public void addParticipant(User participant) throws Exception {
-    if(this.phase == SessionPhase.WELCOME) {
-      this.participants.add(participant);
-    }
-    else {
-      //TODO mudar a exceção
-      throw new Exception("Não esta na fase de acolhimento.");
-    }
-  }
+	public List<Idea> rankIdeas() {
+		List<Idea> sortedIdeas = this.ideas;
+		Collections.sort(sortedIdeas, Comparator.comparing(Idea::countVotes));
+		return sortedIdeas;
+	}
 
-  public void removeParticipant(User participant) throws Exception {
-      if(this.participants.contains(participant)) {
-        this.participants.remove(participant);
-      }
-      else {
-        //TODO alterar exceção
-        throw new Exception("Participante não esta na lista de participantes.");
-      }
-  }
+	public void addParticipant(User participant) throws Exception {
+		if(this.phase == SessionPhase.WELCOME) {
+			this.participants.add(participant);
+		}
+		else {
+			//TODO mudar a exceção
+			throw new Exception("Não esta na fase de acolhimento.");
+		}
+	}
 
-  public List<User> getParticipants() {
-    return this.participants;
-  }
+	public void removeParticipant(User participant) throws Exception {
+		if(this.participants.contains(participant)) {
+			this.participants.remove(participant);
+		}
+		else {
+			//TODO alterar exceção
+			throw new Exception("Participante não esta na lista de participantes.");
+		}
+	}
+
+	public List<User> getParticipants() {
+		return this.participants;
+	}
 
 }
