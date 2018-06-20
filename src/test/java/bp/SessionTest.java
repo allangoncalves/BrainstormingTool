@@ -107,15 +107,15 @@ public class SessionTest {
     this.session.addParticipant(new User("Jane Doe"));
     assertEquals(2, this.session.participants.size());
   }
-  @Test(expected = Exception.class)
-  public void removeNonParticipantTest() throws BusinessException {
+  @Test(expected = BusinessException.class)
+  public void removeNonParticipantTest() throws BusinessException, StateException {
   //A lista de participantes é inalterada se o usuário não é um participante
     this.session.removeParticipant(new User(""));
     assertEquals(1, this.session.participants.size());
   }
 
   @Test
-  public void removeParticipantTest() throws BusinessException {
+  public void removeParticipantTest() throws BusinessException, StateException {
     //Se o usuário for um participante, ele deve ser removido da lista de participantes
     this.session.removeParticipant(this.user);
     assertEquals(0, this.session.participants.size());

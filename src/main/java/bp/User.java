@@ -8,5 +8,6 @@ public class User {
   int votes;
 
   public User(String username) {
+    this.username = username;
   }
 }
